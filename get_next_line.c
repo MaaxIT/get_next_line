@@ -2,66 +2,30 @@
 
 char	*get_next_line(int fd)
 {
-	static int	line;
-	int			cur_line;
-	char		*content;
-	char		*final;
-	size_t		i;
+	static char	buffer[BUFFER_SIZE];
+	char		*res = NULL;
 	size_t		index;
 
-	if (fd < 0)
-		return (NULL);
-	content = malloc(sizeof(char) * BUFFER_SIZE);
-	final = malloc(sizeof(char) * BUFFER_SIZE);
-	if (!content)
-		return (NULL);
-	read(fd, content, BUFFER_SIZE);
-
-	i = 0;
-	cur_line = 0;
+	if (!*buffer)
+		read(fd, buffer, BUFFER_SIZE);
 	index = 0;
-	while (content[i])
+	while (buffer[index])
 	{
-		if (content[i] == '\n')
-			cur_line++;
-		if (cur_line == line)
+		if (buffer[index] == '\n')
 		{
-			final[index] = content[i];
 			index++;
-		}
-		else if (cur_line > line)
 			break ;
-		i++;
+		}
+		index++;
 	}
-	final[index] = '\0';
-	line++;
-	free(content);
-	return (final);
+	if (index > 0)
+	{
+		res = malloc(index + 1);
+		if (!res)
+			return (NULL);
+		ft_strlcpy(res, buffer, index + 1);
+		ft_strlcpy(buffer, buffer + index, -1);
+	}
+	return (res);
 }
-
-#include <fcntl.h>
-int	main(void)
-{
-	int		fd;
-	char	*res;
-
-	fd = open("test", O_RDONLY);
-	res = get_next_line(fd);
-	printf("\n%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	res = get_next_line(fd);
-	printf("%s\n", res);
-	free(res);
-	return (0);
-}
+›
