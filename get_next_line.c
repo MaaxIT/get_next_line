@@ -2,29 +2,45 @@
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE];
-	char		*res = NULL;
-	size_t		index;
+	static char	remainder[BUFFER_SIZE];
+	char		*buffer;
+	char		*response;
+	size_t		next_char;
+	int			result;
 
-	if (!*buffer)
-		read(fd, buffer, BUFFER_SIZE);
-	index = 0;
-	while (buffer[index])
+	buffer = ft_calloc(BUFFER_SIZE + ft_strlen(remainder) + 1, 1);
+	if (!buffer)
+		return (NULL);
+	result = read(fd, buffer, BUFFER_SIZE);
+	if (result <= 0)
+		return (NULL);
+	response = ft_strjoin(remainder, buffer);
+	if (!response)
+		return (NULL);
+	ft_strlcpy(buffer, response, -1);
+	free(response);
+
+
+	next_char = 0;
+	while (buffer[next_char])
 	{
-		if (buffer[index] == '\n')
+		if (buffer[next_char] == '\n')
 		{
-			index++;
-			break ;
+			next_char++;
+			break;
 		}
-		index++;
+		next_char++;
 	}
-	if (index > 0)
+
+	if (next_char > 0)
 	{
-		res = malloc(index + 1);
-		if (!res)
+		response = ft_calloc(next_char + 1, 1);
+		if (!response)
 			return (NULL);
-		ft_strlcpy(res, buffer, index + 1);
-		ft_strlcpy(buffer, buffer + index, -1);
+
+		ft_strlcat(remainder, buffer + next_char, -1);
+		ft_strlcpy(response, buffer, next_char + 1);
 	}
-	return (res);
+	free(buffer);
+	return (response);
 }
