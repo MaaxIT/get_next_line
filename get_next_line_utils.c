@@ -12,44 +12,64 @@
 
 #include "get_next_line.h"
 
-/* Calculate the length of the string */
+/* 
+ft_strlen
+- Purpose: Calculate the length of a string until a '\0' is found
+- From: libft42 (mine)
+*/
 size_t	ft_strlen(char *str)
 {
 	size_t	len;
 
 	len = 0;
-	while (str[len])
+	while (str && str[len])
 		len++;
 	return (len);
 }
 
-/* Make each byte of the char a \0 character */
-void	ft_bzero(void *str, size_t size)
+/*
+ft_str_bzero
+- Purpose: Loop through all bytes of str and set them to '\0'
+- From: libft42 - ft_bzero (mine)
+*/
+void	ft_str_bzero(char *str)
 {
-	char	*str_cpy;
-	size_t	i;
+    while (*str)
+        *str++ = '\0';    
+}
 
+/*
+ft_memmove
+- Purpose: Move a block of memory from one location to another (allowing overlaps)
+- From: libft42 (mine)
+*/
+void	*ft_memmove(void *dst, const void *src, size_t size)
+{
+	unsigned char			*dst_cpy;
+	const unsigned char		*src_cpy;
+	size_t					i;
+
+	if (!dst && !src)
+		return (NULL);
 	i = 0;
-	str_cpy = str;
-	while (i < size)
-		str_cpy[i++] = '\0';
+	if (dst == src)
+		return (dst);
+	dst_cpy = dst;
+	src_cpy = src;
+	if (src_cpy < dst_cpy)
+		while (++i <= size)
+			dst_cpy[size - i] = src_cpy[size - i];
+	else
+		while (size--)
+			*dst_cpy++ = *src_cpy++;
+	return (dst);
 }
 
-/* Allocate memory and bzero everything */
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*result;
-	size_t	total;
-
-	total = count * size;
-	result = malloc(total);
-	if (!result)
-		return ((void *)0);
-	ft_bzero(result, total);
-	return (result);
-}
-
-/* Copy a source string into a dest string up to n bytes */
+/*
+ft_strlcpy
+- Purpose: Copy string src to dst up to n-1 bytes, and add a '\0' character after it
+- From: libft42 (mine)
+*/
 size_t	ft_strlcpy(char *dst, char const *src, size_t n)
 {
 	size_t	i;
@@ -68,22 +88,26 @@ size_t	ft_strlcpy(char *dst, char const *src, size_t n)
 	return (src_len);
 }
 
-/* Concatenate two strings */
-size_t	ft_strlcat(char *dst, char const *src, size_t nbr)
+/*
+ft_strlcpy
+- Purpose: Concatenate a string src to dst into a new string, and add a '\0' character after it
+- From: libft42 (mine)
+*/
+char    *ft_stradd(char *str1, char *str2)
 {
-	size_t	dst_len;
-	size_t	src_len;
+    char    *new;
+    size_t  str1_len;
+    size_t  str2_len;
 
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen((char *)src);
-	if (nbr >= dst_len)
-	{
-		dst += dst_len;
-		nbr -= dst_len;
-		ft_strlcpy(dst, src, nbr);
-		return (dst_len + src_len);
-	}
-	else
-		return (nbr + src_len);
-	return (0);
+    str1_len = ft_strlen(str1);
+    str2_len = ft_strlen(str2);
+    new = malloc(str1_len + str2_len + 1);
+    if (!new)
+        return (NULL);
+    ft_str_bzero(new);
+    ft_strlcpy(new, str1, -1);
+    ft_strlcpy(new + str1_len, str2, -1);
+    if (str1)
+        free(str1);
+    return (new);
 }
