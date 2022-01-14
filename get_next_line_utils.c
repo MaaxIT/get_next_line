@@ -6,13 +6,13 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:03 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/06 16:31:39 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/14 13:35:28 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/* 
+/*
 ft_strlen
 - Purpose: Calculate the length of a string until a '\0' is found
 - From: libft42 (mine)
@@ -35,7 +35,7 @@ ft_str_bzero
 void	ft_str_bzero(char *str)
 {
     while (*str)
-        *str++ = '\0';    
+        *str++ = '\0';
 }
 
 /*
@@ -89,25 +89,26 @@ size_t	ft_strlcpy(char *dst, char const *src, size_t n)
 }
 
 /*
-ft_strlcpy
-- Purpose: Concatenate a string src to dst into a new string, and add a '\0' character after it
+ft_strdup
+- Purpose: Allocate a string and forward str into it.
 - From: libft42 (mine)
 */
-char    *ft_stradd(char *str1, char *str2)
+char	*ft_strdup(char const *str)
 {
-    char    *new;
-    size_t  str1_len;
-    size_t  str2_len;
+	size_t	i;
+	size_t	str_len;
+	char	*ptr;
 
-    str1_len = ft_strlen(str1);
-    str2_len = ft_strlen(str2);
-    new = malloc(str1_len + str2_len + 1);
-    if (!new)
-        return (NULL);
-    ft_str_bzero(new);
-    ft_strlcpy(new, str1, -1);
-    ft_strlcpy(new + str1_len, str2, -1);
-    if (str1)
-        free(str1);
-    return (new);
+	str_len = ft_strlen((char *)str);
+	ptr = malloc((str_len + 1) * sizeof(char));
+	if (!ptr)
+		return ((char *)0);
+	i = 0;
+	while (i < str_len)
+	{
+		ptr[i] = str[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }

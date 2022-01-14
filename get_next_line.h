@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:08 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/06 16:31:44 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/14 13:46:47 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ size_t	ft_strlen(char *str);
 void	ft_str_bzero(char *str);
 void	*ft_memmove(void *dst, const void *src, size_t size);
 size_t	ft_strlcpy(char *dst, char const *src, size_t n);
-char    *ft_stradd(char *str1, char *str2);
+char	*ft_strdup(char const *str);
 
 #endif

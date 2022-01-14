@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/06 16:49:52 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/14 14:24:49 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,69 +18,63 @@ get_next_line
 */
 char    *get_next_line(int fd)
 {
-    static char remainder[BUFFER_SIZE];
-    char        buffer[BUFFER_SIZE];
-    char        *save;
-    char        *result;
-    long        i;
+    static char remaind[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE + 1];
+    char *str = NULL;
+    char *tmp = NULL;
+    size_t i;
 
-    i = 0;
-    save = NULL;
-    result = NULL;
-    
-    while (remainder[i])
-    {
-        if (remainder[i] == '\n') {
-            result = malloc(i + 1);
-            ft_strlcpy(result, remainder, i + 1);
-            ft_strlcpy(remainder, remainder + i + 1, -1);
-            ft_str_bzero(remainder + i + 1);
-            return (result);
-        }
-        i++;
-    }
-
-    i = read(fd, buffer, BUFFER_SIZE);
-    if (i <= 0)
+    str = ft_strdup(remaind);
+    if (!str)
         return (NULL);
-
-    save = malloc(ft_strlen(remainder) + 1);
-    ft_strlcpy(save, remainder, -1);
+    ft_str_bzero(remaind);
 
     i = 0;
-    while (buffer[i])
+    while (str[i])
     {
-        if (buffer[i] == '\n')
+        if (str[i] == '\n')
         {
-            result = malloc(ft_strlen(save) + i + 1);
-            ft_strlcpy(result, save, -1);
-            ft_strlcpy(result + ft_strlen(result), buffer, -1);
-            free(save); 
-            ft_str_bzero(remainder);
-            ft_strlcpy(remainder, buffer + i + 1, -1);
-            ft_str_bzero(buffer);
-            return (result);
-        }
-        if (!buffer[i + 1])
-        {
-            save = ft_stradd(save, buffer);
-            ft_str_bzero(buffer);
-            i = read(fd, buffer, BUFFER_SIZE);
-            if (i < 0)
-            {
-                free(save);
+            tmp = malloc(i + 2);
+            if (!tmp)
                 return (NULL);
-            }
-            else if (i == 0)
-            {
-                result = ft_stradd(save, buffer);
-                free(save);
-                return (result);
-            }
-            i = 0;
-            break ;
+            ft_strlcpy(tmp, str, i + 2);
+            ft_strlcpy(remaind, str + i + 1, BUFFER_SIZE);
+            free(str);
+            return (tmp);
         }
         i++;
     }
+
+    while ((read(fd, buffer, BUFFER_SIZE) > 0))
+    {
+        buffer[BUFFER_SIZE] = '\0';
+        i = 0;
+        while (buffer[i])
+        {
+            if (buffer[i] == '\n')
+            {
+                tmp = malloc(ft_strlen(str) + i + 1);
+                if (!tmp)
+                    return (NULL);
+                ft_strlcpy(tmp, str, -1);
+                free(str);
+                ft_strlcpy(tmp + ft_strlen(tmp), buffer, i + 1);
+                ft_strlcpy(remaind, buffer + i + 1, -1);
+                return (tmp);
+            }
+            i++;
+        }
+        // if we didnt find, backup for the next read
+        tmp = ft_strdup(str);
+        free(str);
+        str = malloc(ft_strlen(tmp) + ft_strlen(buffer) + 1);
+        if (!str)
+            return (NULL);
+        ft_strlcpy(str, tmp, -1);
+        free(tmp);
+        ft_strlcpy(str + ft_strlen(str), buffer, -1);
+    }
+
+    free(str);
     return (NULL);
 }
