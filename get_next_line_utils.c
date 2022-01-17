@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:03 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 11:25:52 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 11:39:38 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ size_t	ft_strlen(char *str)
 	size_t	len;
 
 	len = 0;
-	while (str && str[len])
+	if (!str)
+		return (len);
+	while (str[len])
 		len++;
 	return (len);
 }
@@ -34,32 +36,10 @@ ft_str_bzero
 */
 void	ft_str_bzero(char *str)
 {
+	if (!str)
+		return ;
     while (*str)
         *str++ = '\0';
-}
-
-/*
-ft_strlcat
-- Purpose: Concatenate src to string dst up to nbr bytes
-- From: libft42 (mine)
-*/
-size_t	ft_strlcat(char *dst, char const *src, size_t nbr)
-{
-	size_t	dst_len;
-	size_t	src_len;
-
-	dst_len = ft_strlen(dst);
-	src_len = ft_strlen((char *)src);
-	if (nbr >= dst_len)
-	{
-		dst += dst_len;
-		nbr -= dst_len;
-		ft_strlcpy(dst, src, nbr);
-		return (dst_len + src_len);
-	}
-	else
-		return (nbr + src_len);
-	return (0);
 }
 
 /*
@@ -72,8 +52,10 @@ size_t	ft_strlcpy(char *dst, char const *src, size_t n)
 	size_t	i;
 	size_t	src_len;
 
+	if (!src)
+		return (0);
 	src_len = ft_strlen((char *)src);
-	if (!dst || !src || n == 0)
+	if (!dst || n == 0)
 		return (src_len);
 	i = 0;
 	while (src[i] && i < (n - 1))
@@ -96,6 +78,8 @@ char	*ft_strdup(char const *str)
 	size_t	str_len;
 	char	*ptr;
 
+	if (!str)
+		return (NULL);
 	str_len = ft_strlen((char *)str);
 	ptr = malloc((str_len + 1) * sizeof(char));
 	if (!ptr)

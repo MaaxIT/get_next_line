@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 11:20:03 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 11:59:36 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ char    *get_next_line(int fd)
         free(str);
         str = malloc(ft_strlen(tmp) + ft_strlen(buffer) + 1);
         if (!str)
+        {
+            free(tmp);
             return (NULL);
+        }
         ft_strlcpy(str, tmp, -1);
         free(tmp);
         ft_strlcpy(str + ft_strlen(str), buffer, -1);
