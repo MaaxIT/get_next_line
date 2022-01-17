@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/14 14:24:49 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 09:23:20 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char    *get_next_line(int fd)
 
     while ((read(fd, buffer, BUFFER_SIZE) > 0))
     {
-        buffer[BUFFER_SIZE] = '\0';
+        // buffer[BUFFER_SIZE] = '\0';
         i = 0;
         while (buffer[i])
         {
@@ -77,4 +77,30 @@ char    *get_next_line(int fd)
 
     free(str);
     return (NULL);
+}
+
+#include "get_next_line.h"
+#include <fcntl.h>
+#include <stdlib.h>
+
+int	main(void)
+{
+	char	*res = NULL;
+	int		fd;
+	size_t	i;
+
+	i = 0;
+	fd = open("test.txt", O_RDONLY);
+
+	while (1)
+	{
+		res = get_next_line(fd);
+		printf("%zu: |%s|\n", i, res);
+		if (!res)
+			break;
+		free(res);
+		i++;
+	}
+	// system("leaks a.out");
+	return (0);
 }
