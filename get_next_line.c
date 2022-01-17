@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 10:13:34 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 11:20:03 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ char    *get_next_line(int fd)
     char *str = NULL;
     char *tmp = NULL;
     size_t i;
+
+    if (fd < 0 || BUFFER_SIZE <= 0)
+        return (NULL);
 
     str = ft_strdup(remaind);
     if (!str)
@@ -47,7 +50,7 @@ char    *get_next_line(int fd)
 
     while ((read(fd, buffer, BUFFER_SIZE) > 0))
     {
-        // buffer[BUFFER_SIZE] = '\0';
+        buffer[BUFFER_SIZE] = '\0';
         i = 0;
         while (buffer[i])
         {

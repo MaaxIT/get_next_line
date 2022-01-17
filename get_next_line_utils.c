@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:03 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/14 13:35:28 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 11:25:52 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,27 @@ void	ft_str_bzero(char *str)
 }
 
 /*
-ft_memmove
-- Purpose: Move a block of memory from one location to another (allowing overlaps)
+ft_strlcat
+- Purpose: Concatenate src to string dst up to nbr bytes
 - From: libft42 (mine)
 */
-void	*ft_memmove(void *dst, const void *src, size_t size)
+size_t	ft_strlcat(char *dst, char const *src, size_t nbr)
 {
-	unsigned char			*dst_cpy;
-	const unsigned char		*src_cpy;
-	size_t					i;
+	size_t	dst_len;
+	size_t	src_len;
 
-	if (!dst && !src)
-		return (NULL);
-	i = 0;
-	if (dst == src)
-		return (dst);
-	dst_cpy = dst;
-	src_cpy = src;
-	if (src_cpy < dst_cpy)
-		while (++i <= size)
-			dst_cpy[size - i] = src_cpy[size - i];
+	dst_len = ft_strlen(dst);
+	src_len = ft_strlen((char *)src);
+	if (nbr >= dst_len)
+	{
+		dst += dst_len;
+		nbr -= dst_len;
+		ft_strlcpy(dst, src, nbr);
+		return (dst_len + src_len);
+	}
 	else
-		while (size--)
-			*dst_cpy++ = *src_cpy++;
-	return (dst);
+		return (nbr + src_len);
+	return (0);
 }
 
 /*

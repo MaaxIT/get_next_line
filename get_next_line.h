@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:08 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 10:09:33 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 11:26:00 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char    *get_next_line(int fd);
 /* get_next_line_utils.c */
 size_t	ft_strlen(char *str);
 void	ft_str_bzero(char *str);
-void	*ft_memmove(void *dst, const void *src, size_t size);
+size_t	ft_strlcat(char *dst, char const *src, size_t nbr)
 size_t	ft_strlcpy(char *dst, char const *src, size_t n);
 char	*ft_strdup(char const *str);
 
