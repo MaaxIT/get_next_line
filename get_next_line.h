@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:08 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 10:01:52 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/01/17 10:09:33 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 /* get_next_line.c */
 char    *get_next_line(int fd);
