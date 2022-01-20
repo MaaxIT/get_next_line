@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 /*
 get_next_line
@@ -27,25 +28,37 @@ char    *get_next_line(int fd)
     if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
 
-    str = ft_strdup(remaind);
-    if (!str)
-        return (NULL);
-    ft_str_bzero(remaind);
-
-    i = 0;
-    while (str[i])
+    if (ft_strlen(remaind) > 0)
     {
-        if (str[i] == '\n')
+
+        str = ft_strdup(remaind);
+        if (!str)
+            return (NULL);
+        ft_str_bzero(remaind);
+
+        i = 0;
+        while (str[i])
         {
-            tmp = malloc(i + 2);
-            if (!tmp)
-                return (NULL);
-            ft_strlcpy(tmp, str, i + 2);
-            ft_strlcpy(remaind, str + i + 1, BUFFER_SIZE);
-            free(str);
-            return (tmp);
+            if (str[i] == '\n')
+            {
+                tmp = malloc(i + 2);
+                if (!tmp)
+                    return (NULL);
+                ft_strlcpy(tmp, str, i + 2);
+                ft_strlcpy(remaind, str + i + 1, BUFFER_SIZE);
+                free(str);
+                return (tmp);
+            }
+            i++;
         }
-        i++;
+
+    } 
+    else 
+    {
+        str = malloc(1);
+        if (!str)
+            return (NULL);
+        str[0] = '\0';
     }
 
     while ((read(fd, buffer, BUFFER_SIZE) > 0))
