@@ -11,7 +11,11 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
+
+# include <stdio.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 /*
 get_next_line
@@ -25,15 +29,17 @@ char    *get_next_line(int fd)
     char *tmp = NULL;
     size_t i;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
+    if (fd < 0 || BUFFER_SIZE <= 0) {
         return (NULL);
-
+    }
+        
     if (ft_strlen(remaind) > 0)
     {
 
         str = ft_strdup(remaind);
-        if (!str)
+        if (!str) {
             return (NULL);
+        }
         ft_str_bzero(remaind);
 
         i = 0;
@@ -42,8 +48,9 @@ char    *get_next_line(int fd)
             if (str[i] == '\n')
             {
                 tmp = malloc(i + 2);
-                if (!tmp)
+                if (!tmp) {
                     return (NULL);
+                }
                 ft_strlcpy(tmp, str, i + 2);
                 ft_strlcpy(remaind, str + i + 1, BUFFER_SIZE);
                 free(str);
@@ -56,22 +63,32 @@ char    *get_next_line(int fd)
     else 
     {
         str = malloc(1);
-        if (!str)
+        if (!str) {
             return (NULL);
+        }
         str[0] = '\0';
     }
 
-    while ((read(fd, buffer, BUFFER_SIZE) > 0))
+    ssize_t result = read(fd, buffer, BUFFER_SIZE);
+    while (result >= 0)
     {
-        buffer[BUFFER_SIZE] = '\0';
+        if (result == 0) {
+            if (*str)
+                return (str);
+            else
+                break ;
+        }
+        printf("%zu\n", result);
+        buffer[result] = '\0';
         i = 0;
         while (buffer[i])
         {
             if (buffer[i] == '\n')
             {
                 tmp = malloc(ft_strlen(str) + i + 2);
-                if (!tmp)
+                if (!tmp) {
                     return (NULL);
+                }
                 ft_strlcpy(tmp, str, -1);
                 free(str);
                 ft_strlcpy(tmp + ft_strlen(tmp), buffer, i + 2);
@@ -92,6 +109,7 @@ char    *get_next_line(int fd)
         ft_strlcpy(str, tmp, -1);
         free(tmp);
         ft_strlcpy(str + ft_strlen(str), buffer, -1);
+        result = read(fd, buffer, BUFFER_SIZE);
     }
 
     free(str);
