@@ -24,7 +24,8 @@ get_next_line
 char    *get_next_line(int fd)
 {
     static char remaind[BUFFER_SIZE];
-    char buffer[BUFFER_SIZE + 1];
+    // char buffer[BUFFER_SIZE + 1];
+    char *buffer = NULL;
     char *str = NULL;
     char *tmp = NULL;
     size_t i;
@@ -69,16 +70,28 @@ char    *get_next_line(int fd)
         str[0] = '\0';
     }
 
+    buffer = malloc(BUFFER_SIZE + 1);
+    if (!buffer)
+        return (NULL);
+
+    size_t aaa = BUFFER_SIZE;
+    while (aaa)
+    {
+        buffer[aaa] = '\0';
+        aaa--;
+    }
+
     ssize_t result = read(fd, buffer, BUFFER_SIZE);
     while (result >= 0)
     {
         if (result == 0) {
-            if (*str)
+            if (*str) {
+                free(buffer);
                 return (str);
+            }
             else
                 break ;
         }
-        printf("%zu\n", result);
         buffer[result] = '\0';
         i = 0;
         while (buffer[i])
@@ -87,12 +100,14 @@ char    *get_next_line(int fd)
             {
                 tmp = malloc(ft_strlen(str) + i + 2);
                 if (!tmp) {
+                    free(buffer);
                     return (NULL);
                 }
                 ft_strlcpy(tmp, str, -1);
                 free(str);
                 ft_strlcpy(tmp + ft_strlen(tmp), buffer, i + 2);
                 ft_strlcpy(remaind, buffer + i + 1, -1);
+                free(buffer);
                 return (tmp);
             }
             i++;
@@ -103,6 +118,7 @@ char    *get_next_line(int fd)
         str = malloc(ft_strlen(tmp) + ft_strlen(buffer) + 1);
         if (!str)
         {
+            free(buffer);
             free(tmp);
             return (NULL);
         }
@@ -113,5 +129,6 @@ char    *get_next_line(int fd)
     }
 
     free(str);
+    free(buffer);
     return (NULL);
 }
