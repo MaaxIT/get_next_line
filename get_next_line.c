@@ -6,16 +6,11 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 11:59:36 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:46:18 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-# include <stdio.h>
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
 
 /*
 get_next_line
@@ -24,7 +19,6 @@ get_next_line
 char    *get_next_line(int fd)
 {
     static char remaind[BUFFER_SIZE];
-    // char buffer[BUFFER_SIZE + 1];
     char *buffer = NULL;
     char *str = NULL;
     char *tmp = NULL;
@@ -33,15 +27,14 @@ char    *get_next_line(int fd)
     if (fd < 0 || BUFFER_SIZE <= 0) {
         return (NULL);
     }
-        
+
     if (ft_strlen(remaind) > 0)
     {
 
         str = ft_strdup(remaind);
-        if (!str) {
+        if (!str)
             return (NULL);
-        }
-        ft_str_bzero(remaind);
+        ft_bzero(remaind, ft_strlen(remaind) + 1);
 
         i = 0;
         while (str[i])
@@ -49,9 +42,8 @@ char    *get_next_line(int fd)
             if (str[i] == '\n')
             {
                 tmp = malloc(i + 2);
-                if (!tmp) {
+                if (!tmp)
                     return (NULL);
-                }
                 ft_strlcpy(tmp, str, i + 2);
                 ft_strlcpy(remaind, str + i + 1, BUFFER_SIZE);
                 free(str);
@@ -60,8 +52,8 @@ char    *get_next_line(int fd)
             i++;
         }
 
-    } 
-    else 
+    }
+    else
     {
         str = malloc(1);
         if (!str) {
@@ -73,13 +65,7 @@ char    *get_next_line(int fd)
     buffer = malloc(BUFFER_SIZE + 1);
     if (!buffer)
         return (NULL);
-
-    size_t aaa = BUFFER_SIZE;
-    while (aaa)
-    {
-        buffer[aaa] = '\0';
-        aaa--;
-    }
+    ft_bzero(buffer, BUFFER_SIZE + 1);
 
     ssize_t result = read(fd, buffer, BUFFER_SIZE);
     while (result >= 0)

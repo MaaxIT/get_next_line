@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:35:03 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/01/17 11:39:38 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:45:25 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,19 @@ size_t	ft_strlen(char *str)
 }
 
 /*
-ft_str_bzero
-- Purpose: Loop through all bytes of str and set them to '\0'
+ft_bzero
+- Purpose: Loop through size bytes of ptr and set them to '\0'
 - From: libft42 - ft_bzero (mine)
 */
-void	ft_str_bzero(char *str)
+void	ft_bzero(void *str, size_t size)
 {
-	if (!str)
-		return ;
-    while (*str)
-        *str++ = '\0';
+	char	*str_cpy;
+	size_t	i;
+
+	i = 0;
+	str_cpy = str;
+	while (i < size)
+		str_cpy[i++] = '\0';
 }
 
 /*
