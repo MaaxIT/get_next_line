@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/02 13:49:07 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:50:54 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char    *get_next_line(int fd)
         return (NULL);
     }
 
+    // START: SEPARATOR 1
     if (ft_strlen(remaind) > 0)
     {
         str = ft_strdup(remaind);
@@ -59,12 +60,14 @@ char    *get_next_line(int fd)
             return (NULL);
         ft_bzero(str, 1);
     }
+    // END: SEPARATOR 1
 
     buffer = malloc(BUFFER_SIZE + 1);
     if (!buffer)
         return (NULL);
     ft_bzero(buffer, BUFFER_SIZE + 1);
 
+    // START: SEPARATOR 2
     result = read(fd, buffer, BUFFER_SIZE);
     while (result >= 0)
     {
@@ -111,6 +114,7 @@ char    *get_next_line(int fd)
         ft_strlcpy(str + ft_strlen(str), buffer, -1);
         result = read(fd, buffer, BUFFER_SIZE);
     }
+    // END: SEPARATOR 2
 
     free(str);
     free(buffer);
