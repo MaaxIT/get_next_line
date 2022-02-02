@@ -22,23 +22,19 @@ char    *get_next_line(int fd)
     char        *buffer = NULL;
     char        *str = NULL;
     char        *tmp = NULL;
-    size_t      i;
+    ssize_t      i;
     ssize_t     result;
 
-    if (fd < 0 || BUFFER_SIZE <= 0) {
+    if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
-    }
-
-    // START: SEPARATOR 1
     if (ft_strlen(remaind) > 0)
     {
         str = ft_strdup(remaind);
         if (!str)
             return (NULL);
         ft_bzero(remaind, ft_strlen(remaind) + 1);
-
-        i = 0;
-        while (str[i])
+        i = -1;
+        while (str[++i])
         {
             if (str[i] == '\n')
             {
@@ -50,7 +46,6 @@ char    *get_next_line(int fd)
                 free(str);
                 return (tmp);
             }
-            i++;
         }
     }
     else
@@ -60,14 +55,10 @@ char    *get_next_line(int fd)
             return (NULL);
         ft_bzero(str, 1);
     }
-    // END: SEPARATOR 1
-
     buffer = malloc(BUFFER_SIZE + 1);
     if (!buffer)
         return (NULL);
     ft_bzero(buffer, BUFFER_SIZE + 1);
-
-    // START: SEPARATOR 2
     result = read(fd, buffer, BUFFER_SIZE);
     while (result >= 0)
     {
@@ -80,8 +71,8 @@ char    *get_next_line(int fd)
                 break ;
         }
         buffer[result] = '\0';
-        i = 0;
-        while (buffer[i])
+        i = -1;
+        while (buffer[++i])
         {
             if (buffer[i] == '\n')
             {
@@ -97,9 +88,7 @@ char    *get_next_line(int fd)
                 free(buffer);
                 return (tmp);
             }
-            i++;
         }
-        // if we didnt find, backup for the next read
         tmp = ft_strdup(str);
         free(str);
         str = malloc(ft_strlen(tmp) + ft_strlen(buffer) + 1);
@@ -114,8 +103,6 @@ char    *get_next_line(int fd)
         ft_strlcpy(str + ft_strlen(str), buffer, -1);
         result = read(fd, buffer, BUFFER_SIZE);
     }
-    // END: SEPARATOR 2
-
     free(str);
     free(buffer);
     return (NULL);
