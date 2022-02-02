@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 17:34:51 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/02 13:46:18 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:49:07 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ get_next_line
 char    *get_next_line(int fd)
 {
     static char remaind[BUFFER_SIZE];
-    char *buffer = NULL;
-    char *str = NULL;
-    char *tmp = NULL;
-    size_t i;
+    char        *buffer = NULL;
+    char        *str = NULL;
+    char        *tmp = NULL;
+    size_t      i;
+    ssize_t     result;
 
     if (fd < 0 || BUFFER_SIZE <= 0) {
         return (NULL);
@@ -30,7 +31,6 @@ char    *get_next_line(int fd)
 
     if (ft_strlen(remaind) > 0)
     {
-
         str = ft_strdup(remaind);
         if (!str)
             return (NULL);
@@ -51,15 +51,13 @@ char    *get_next_line(int fd)
             }
             i++;
         }
-
     }
     else
     {
         str = malloc(1);
-        if (!str) {
+        if (!str)
             return (NULL);
-        }
-        str[0] = '\0';
+        ft_bzero(str, 1);
     }
 
     buffer = malloc(BUFFER_SIZE + 1);
@@ -67,7 +65,7 @@ char    *get_next_line(int fd)
         return (NULL);
     ft_bzero(buffer, BUFFER_SIZE + 1);
 
-    ssize_t result = read(fd, buffer, BUFFER_SIZE);
+    result = read(fd, buffer, BUFFER_SIZE);
     while (result >= 0)
     {
         if (result == 0) {
