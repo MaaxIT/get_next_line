@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 23:32:49 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/11 23:36:00 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*check_remaind(char **remaind)
 			free(buffer);
 			buffer = NULL;
 		}
-		if (ft_strlen(found) > 0)
+		if (ft_strlen(found + 1) > 0)
 			*remaind = ft_strdup(found + 1);
 		free(cpy);
 		return (buffer);
