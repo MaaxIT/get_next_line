@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:12 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 22:56:44 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/11 23:32:33 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,22 @@ void	*ft_calloc(size_t count, size_t size)
 
 char	*ft_strdup(const char *str)
 {
-	size_t siz;
-	char *copy;
-	siz = strlen(str) + 1;
-	if ((copy = malloc(siz)) == NULL)
-		return(NULL);
-	(void)memcpy(copy, str, siz);
-	return(copy);
+	size_t	i;
+	size_t	str_len;
+	char	*ptr;
+
+	str_len = ft_strlen(str);
+	ptr = malloc((str_len + 1) * sizeof(char));
+	if (!ptr)
+		return (NULL);
+	i = 0;
+	while (i < str_len)
+	{
+		ptr[i] = str[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
 
 size_t	ft_strlcat(char *dst, const char *src, size_t nbr)

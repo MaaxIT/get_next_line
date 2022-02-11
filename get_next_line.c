@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 22:57:18 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/11 23:32:49 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ ssize_t	add_read_to_buffer(char **buffer, char *next)
 	if (*buffer)
 	{
 		new_size += ft_strlen(*buffer);
-		tmp = strdup(*buffer);
+		tmp = ft_strdup(*buffer);
 		free(*buffer);
 	}
 	*buffer = ft_calloc(new_size + 1, sizeof(char));
@@ -79,7 +79,7 @@ char	*check_remaind(char **remaind)
 
 	found = NULL;
 	buffer = NULL;
-	cpy = strdup(*remaind);
+	cpy = ft_strdup(*remaind);
 	if (!cpy)
 		return (NULL);
 	found = strchr(cpy, '\n');
@@ -92,7 +92,7 @@ char	*check_remaind(char **remaind)
 			buffer = NULL;
 		}
 		if (ft_strlen(found) > 0)
-			*remaind = strdup(found + 1);
+			*remaind = ft_strdup(found + 1);
 		free(cpy);
 		return (buffer);
 	}
@@ -120,7 +120,7 @@ char	*get_next_line(int fd)
 		{
 			if (ft_strlen(remaind) > 0)
 			{
-				buffer = strdup(remaind);
+				buffer = ft_strdup(remaind);
 				if (!buffer)
 					return (NULL);
 			}
@@ -137,11 +137,11 @@ char	*get_next_line(int fd)
 		i = add_read_to_buffer(&buffer, next);
 		if (i == -1)
 			return (NULL);
-		found = strchr(buffer, '\n');
+		found = ft_strchr(buffer, '\n');
 		if (found)
 		{
-			if (found + 1)
-				remaind = strdup(found + 1);
+			if (ft_strlen(found + 1) > 0)
+				remaind = ft_strdup(found + 1);
 			buffer = remove_remaind_from_buffer(buffer, ft_strlen(found) - 1);
 			break ;
 		}
