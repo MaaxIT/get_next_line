@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 23:36:00 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/11 23:51:20 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ char	*check_remaind(char **remaind)
 		free(cpy);
 		return (buffer);
 	}
-	free(cpy);
+	if (*remaind && **remaind)
+		free(*remaind);
+	*remaind = cpy;
 	return (NULL);
 }
 
@@ -124,7 +126,6 @@ char	*get_next_line(int fd)
 				if (!buffer)
 					return (NULL);
 			}
-			remaind = NULL;
 			free(remaind);
 		}
 	}
@@ -138,6 +139,11 @@ char	*get_next_line(int fd)
 		if (i == -1)
 			return (NULL);
 		found = ft_strchr(buffer, '\n');
+
+		// printf("\033[0;31m");
+		// printf("-----\nBEFORE :\nBUFFER=|%s|\nREMAIND=|%s|\nFOUND=|%s|\n======== END ========\n\n", buffer, remaind, found);
+		// printf("\033[0m");
+
 		if (found)
 		{
 			if (ft_strlen(found + 1) > 0)
@@ -146,5 +152,8 @@ char	*get_next_line(int fd)
 			break ;
 		}
 	}
+	// printf("\033[0;31m");
+	// printf("-----\nAfter :\nBUFFER=|%s|\nREMAIND=|%s|\nFOUND=|%s|\n======== END ========\n\n", buffer, remaind, found);
+	// printf("\033[0m");
 	return (buffer);
 }
