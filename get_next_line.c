@@ -6,18 +6,15 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/15 09:03:09 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 09:13:25 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
-What I can do to optimize lines :
-- Merge strlcat and freeing source
-
+/* alloc_read_buffer
+-> Read the file descriptor and return the allocated buffer string
 */
-
 char	*alloc_read_buffer(int fd)
 {
 	char		*buffer;
@@ -35,6 +32,9 @@ char	*alloc_read_buffer(int fd)
 	return (buffer);
 }
 
+/* add_read_to_buffer
+-> Add the next fd read to the current buffer
+*/
 ssize_t	add_read_to_buffer(char **buffer, char *next)
 {
 	char	*tmp;
@@ -61,6 +61,9 @@ ssize_t	add_read_to_buffer(char **buffer, char *next)
 	return (0);
 }
 
+/* remove_remaind_from_buffer
+-> Remove the remainder substring from the buffer
+*/
 char	*remove_remaind_from_buffer(char *buffer, size_t len)
 {
 	char	*new;
@@ -77,6 +80,9 @@ char	*remove_remaind_from_buffer(char *buffer, size_t len)
 	return (new);
 }
 
+/* check_remaind
+-> Check for \n in the remainder string before reading anything
+*/
 char	*check_remaind(char **remaind)
 {
 	char	*found;
@@ -106,6 +112,9 @@ char	*check_remaind(char **remaind)
 	return (NULL);
 }
 
+/* get_next_line
+-> The main function used to get the next line string of a file descriptor
+*/
 char	*get_next_line(int fd)
 {
 	static char	*remaind = NULL;

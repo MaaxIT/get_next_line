@@ -6,12 +6,15 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:12 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 23:32:33 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 09:18:43 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/* ft_strlen
+-> Return the length of str
+*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	len;
@@ -24,6 +27,9 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
+/* ft_calloc
+-> Allocate count * size bytes and set each byte to 0
+*/
 void	*ft_calloc(size_t count, size_t size)
 {
 	char	*result;
@@ -40,6 +46,9 @@ void	*ft_calloc(size_t count, size_t size)
 	return (result);
 }
 
+/* ft_strdup
+-> Create a new allocated copy of str
+*/
 char	*ft_strdup(const char *str)
 {
 	size_t	i;
@@ -60,6 +69,9 @@ char	*ft_strdup(const char *str)
 	return (ptr);
 }
 
+/* ft_strlcat
+-> Concatenate src next to dst up to nbr-1 bytes
+*/
 size_t	ft_strlcat(char *dst, const char *src, size_t nbr)
 {
 	size_t	dst_len;
@@ -86,6 +98,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t nbr)
 	return (0);
 }
 
+/* ft_strchr
+-> Return the substring of str starting with the character we searched
+*/
 char	*ft_strchr(const char *str, int ch)
 {
 	int				i;
