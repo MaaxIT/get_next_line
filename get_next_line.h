@@ -6,18 +6,16 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:30 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/15 09:19:10 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 09:21:14 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+/* External libraries */
 # include <stdlib.h>
 # include <unistd.h>
-# include <string.h>
-# include <stdio.h>
-# include <fcntl.h>
 
 /* get_next_line_utils */
 size_t	ft_strlen(const char *str);
