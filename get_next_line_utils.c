@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:12 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/15 09:18:43 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 09:49:06 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,11 @@ void	*ft_calloc(size_t count, size_t size)
 /* ft_strdup
 -> Create a new allocated copy of str
 */
-char	*ft_strdup(const char *str)
+char	*ft_strndup(const char *str, size_t str_len)
 {
 	size_t	i;
-	size_t	str_len;
 	char	*ptr;
 
-	str_len = ft_strlen(str);
 	ptr = malloc((str_len + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);

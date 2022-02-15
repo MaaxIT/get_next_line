@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/15 09:13:25 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 10:56:18 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,98 +17,78 @@
 */
 char	*alloc_read_buffer(int fd)
 {
-	char		*buffer;
+	char		*buf;
 	ssize_t		res;
 
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buffer)
+	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buf)
 		return (NULL);
-	res = read(fd, buffer, BUFFER_SIZE);
+	res = read(fd, buf, BUFFER_SIZE);
 	if (res <= 0)
 	{
-		free(buffer);
+		free(buf);
 		return (NULL);
 	}
-	return (buffer);
+	return (buf);
 }
 
 /* add_read_to_buffer
 -> Add the next fd read to the current buffer
 */
-ssize_t	add_read_to_buffer(char **buffer, char *next)
+ssize_t	add_read_to_buffer(char **buf, char *nxt)
 {
 	char	*tmp;
 	size_t	new_size;
 
 	tmp = NULL;
-	new_size = ft_strlen(next);
-	if (*buffer)
+	new_size = ft_strlen(nxt);
+	if (*buf)
 	{
-		new_size += ft_strlen(*buffer);
-		tmp = ft_strdup(*buffer);
-		free(*buffer);
+		new_size += ft_strlen(*buf);
+		tmp = ft_strndup(*buf, ft_strlen(*buf));
+		free(*buf);
 	}
-	*buffer = ft_calloc(new_size + 1, sizeof(char));
+	*buf = ft_calloc(new_size + 1, sizeof(char));
 	if (tmp)
 	{
-		ft_strlcat(*buffer, tmp, -1);
+		ft_strlcat(*buf, tmp, -1);
 		free(tmp);
 	}
-	if (!*buffer)
+	if (!*buf)
 		return (-1);
-	ft_strlcat(*buffer, next, -1);
-	free(next);
+	ft_strlcat(*buf, nxt, -1);
+	free(nxt);
 	return (0);
-}
-
-/* remove_remaind_from_buffer
--> Remove the remainder substring from the buffer
-*/
-char	*remove_remaind_from_buffer(char *buffer, size_t len)
-{
-	char	*new;
-	size_t	total;
-
-	if (!buffer)
-		return (NULL);
-	total = ft_strlen(buffer) + 1 - len;
-	new = ft_calloc(total, sizeof(char));
-	if (!new)
-		return (NULL);
-	ft_strlcat(new, buffer, total);
-	free(buffer);
-	return (new);
 }
 
 /* check_remaind
 -> Check for \n in the remainder string before reading anything
 */
-char	*check_remaind(char **remaind)
+char	*check_remaind(char **rmd)
 {
-	char	*found;
-	char	*buffer;
+	char	*fnd;
+	char	*buf;
 	char	*cpy;
 
-	cpy = ft_strdup(*remaind);
+	cpy = ft_strndup(*rmd, ft_strlen(*rmd));
 	if (!cpy)
 		return (NULL);
-	found = ft_strchr(cpy, '\n');
-	if (found)
+	fnd = ft_strchr(cpy, '\n');
+	if (fnd)
 	{
-		buffer = remove_remaind_from_buffer(*remaind, ft_strlen(found) - 1);
-		if (!buffer)
-			return (NULL);
-		if (ft_strlen(buffer) == 0)
-			free(buffer);
-		if (ft_strlen(found + 1) > 0)
-			*remaind = ft_strdup(found + 1);
+		buf = ft_strndup(*rmd, ft_strlen(*rmd) - (ft_strlen(fnd) - 1));
+		free(*rmd);
+		if (buf && ft_strlen(buf) == 0)
+			free(buf);
+		if (buf && ft_strlen(fnd + 1) > 0)
+			*rmd = ft_strndup(fnd + 1, ft_strlen(fnd + 1));
 		else
-			*remaind = NULL;
+			*rmd = NULL;
 		free(cpy);
-		return (buffer);
+		return (buf);
 	}
-	free(*remaind);
-	*remaind = cpy;
+	free(*rmd);
+	*rmd = cpy;
 	return (NULL);
 }
 
@@ -117,47 +97,48 @@ char	*check_remaind(char **remaind)
 */
 char	*get_next_line(int fd)
 {
-	static char	*remaind = NULL;
-	char		*buffer;
-	char		*next;
-	char		*found;
-	ssize_t		i;
+	static char	*rmd = NULL;
+	char		*buf;
+	char		*nxt;
+	char		*fnd;
+	char		*tmp;
 
-	buffer = NULL;
-	if (remaind)
+	buf = NULL;
+	if (rmd)
 	{
-		found = check_remaind(&remaind);
-		if (found)
-			return (found);
+		fnd = check_remaind(&rmd);
+		if (fnd)
+			return (fnd);
 		else
 		{
-			if (ft_strlen(remaind) > 0)
+			if (ft_strlen(rmd) > 0)
 			{
-				buffer = ft_strdup(remaind);
-				if (!buffer)
+				buf = ft_strndup(rmd, ft_strlen(rmd));
+				if (!buf)
 					return (NULL);
 			}
-			free(remaind);
-			remaind = NULL;
+			free(rmd);
+			rmd = NULL;
 		}
 	}
-	found = NULL;
+	fnd = NULL;
 	while (1)
 	{
-		next = alloc_read_buffer(fd);
-		if (!next)
+		nxt = alloc_read_buffer(fd);
+		if (!nxt)
 			break ;
-		i = add_read_to_buffer(&buffer, next);
-		if (i == -1)
+		if (add_read_to_buffer(&buf, nxt) == -1)
 			return (NULL);
-		found = ft_strchr(buffer, '\n');
-		if (found)
+		fnd = ft_strchr(buf, '\n');
+		if (fnd)
 		{
-			if (ft_strlen(found + 1) > 0)
-				remaind = ft_strdup(found + 1);
-			buffer = remove_remaind_from_buffer(buffer, ft_strlen(found) - 1);
+			if (ft_strlen(fnd + 1) > 0)
+				rmd = ft_strndup(fnd + 1, ft_strlen(fnd + 1));
+			tmp = ft_strndup(buf, ft_strlen(buf) - (ft_strlen(fnd) - 1));
+			free(buf);
+			buf = tmp;
 			break ;
 		}
 	}
-	return (buffer);
+	return (buf);
 }
