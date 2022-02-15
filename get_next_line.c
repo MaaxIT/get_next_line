@@ -6,11 +6,17 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/15 08:31:02 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 09:03:09 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+What I can do to optimize lines :
+- Merge strlcat and freeing source
+
+*/
 
 char	*alloc_read_buffer(int fd)
 {
@@ -80,7 +86,7 @@ char	*check_remaind(char **remaind)
 	cpy = ft_strdup(*remaind);
 	if (!cpy)
 		return (NULL);
-	found = strchr(cpy, '\n');
+	found = ft_strchr(cpy, '\n');
 	if (found)
 	{
 		buffer = remove_remaind_from_buffer(*remaind, ft_strlen(found) - 1);
