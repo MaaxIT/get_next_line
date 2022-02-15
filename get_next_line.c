@@ -6,7 +6,7 @@
 /*   By: mpeharpr <mpeharpr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 22:16:17 by mpeharpr          #+#    #+#             */
-/*   Updated: 2022/02/11 23:51:20 by mpeharpr         ###   ########.fr       */
+/*   Updated: 2022/02/15 08:31:02 by mpeharpr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ char	*check_remaind(char **remaind)
 	char	*buffer;
 	char	*cpy;
 
-	found = NULL;
-	buffer = NULL;
 	cpy = ft_strdup(*remaind);
 	if (!cpy)
 		return (NULL);
@@ -111,8 +109,6 @@ char	*get_next_line(int fd)
 	ssize_t		i;
 
 	buffer = NULL;
-	next = NULL;
-	found = NULL;
 	if (remaind)
 	{
 		found = check_remaind(&remaind);
@@ -130,7 +126,6 @@ char	*get_next_line(int fd)
 			remaind = NULL;
 		}
 	}
-
 	found = NULL;
 	while (1)
 	{
