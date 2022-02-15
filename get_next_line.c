@@ -86,18 +86,18 @@ char	*check_remaind(char **remaind)
 	if (found)
 	{
 		buffer = remove_remaind_from_buffer(*remaind, ft_strlen(found) - 1);
+		if (!buffer)
+			return (NULL);
 		if (ft_strlen(buffer) == 0)
-		{
 			free(buffer);
-			buffer = NULL;
-		}
 		if (ft_strlen(found + 1) > 0)
 			*remaind = ft_strdup(found + 1);
+		else
+			*remaind = NULL;
 		free(cpy);
 		return (buffer);
 	}
-	if (*remaind && **remaind)
-		free(*remaind);
+	free(*remaind);
 	*remaind = cpy;
 	return (NULL);
 }
@@ -127,8 +127,10 @@ char	*get_next_line(int fd)
 					return (NULL);
 			}
 			free(remaind);
+			remaind = NULL;
 		}
 	}
+
 	found = NULL;
 	while (1)
 	{
@@ -139,11 +141,6 @@ char	*get_next_line(int fd)
 		if (i == -1)
 			return (NULL);
 		found = ft_strchr(buffer, '\n');
-
-		// printf("\033[0;31m");
-		// printf("-----\nBEFORE :\nBUFFER=|%s|\nREMAIND=|%s|\nFOUND=|%s|\n======== END ========\n\n", buffer, remaind, found);
-		// printf("\033[0m");
-
 		if (found)
 		{
 			if (ft_strlen(found + 1) > 0)
@@ -152,8 +149,5 @@ char	*get_next_line(int fd)
 			break ;
 		}
 	}
-	// printf("\033[0;31m");
-	// printf("-----\nAfter :\nBUFFER=|%s|\nREMAIND=|%s|\nFOUND=|%s|\n======== END ========\n\n", buffer, remaind, found);
-	// printf("\033[0m");
 	return (buffer);
 }
