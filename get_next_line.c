@@ -92,6 +92,41 @@ char	*check_remaind(char **rmd)
 	return (NULL);
 }
 
+/* loop_through_buffer
+-> Loop through the buffer to find a new line
+-> Return values:
+	- 0 = continue without returning anything
+	- 1 = return NULL
+*/
+size_t	loop_through_buffer(int fd, char **buf, char **rmd)
+{
+	char	*fnd;
+	char	*tmp;
+	char	*nxt;
+
+	fnd = NULL;
+	nxt = NULL;
+	while (1)
+	{
+		nxt = alloc_read_buffer(fd);
+		if (!nxt)
+			break ;
+		if (add_read_to_buffer(buf, nxt) == -1)
+			return (1);
+		fnd = ft_strchr(*buf, '\n');
+		if (fnd)
+		{
+			if (ft_strlen(fnd + 1) > 0)
+				*rmd = ft_strndup(fnd + 1, ft_strlen(fnd + 1));
+			tmp = ft_strndup(*buf, ft_strlen(*buf) - (ft_strlen(fnd) - 1));
+			free(*buf);
+			*buf = tmp;
+			break ;
+		}
+	}
+	return (0);
+}
+
 /* get_next_line
 -> The main function used to get the next line string of a file descriptor
 */
@@ -99,16 +134,14 @@ char	*get_next_line(int fd)
 {
 	static char	*rmd = NULL;
 	char		*buf;
-	char		*nxt;
-	char		*fnd;
 	char		*tmp;
 
 	buf = NULL;
 	if (rmd)
 	{
-		fnd = check_remaind(&rmd);
-		if (fnd)
-			return (fnd);
+		tmp = check_remaind(&rmd);
+		if (tmp)
+			return (tmp);
 		else
 		{
 			if (ft_strlen(rmd) > 0)
@@ -121,24 +154,7 @@ char	*get_next_line(int fd)
 			rmd = NULL;
 		}
 	}
-	fnd = NULL;
-	while (1)
-	{
-		nxt = alloc_read_buffer(fd);
-		if (!nxt)
-			break ;
-		if (add_read_to_buffer(&buf, nxt) == -1)
-			return (NULL);
-		fnd = ft_strchr(buf, '\n');
-		if (fnd)
-		{
-			if (ft_strlen(fnd + 1) > 0)
-				rmd = ft_strndup(fnd + 1, ft_strlen(fnd + 1));
-			tmp = ft_strndup(buf, ft_strlen(buf) - (ft_strlen(fnd) - 1));
-			free(buf);
-			buf = tmp;
-			break ;
-		}
-	}
+	if (loop_through_buffer(fd, &buf, &rmd) == 1)
+		return (NULL);
 	return (buf);
 }
