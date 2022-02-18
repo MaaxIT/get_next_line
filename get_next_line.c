@@ -92,13 +92,13 @@ char	*check_remaind(char **rmd)
 	return (NULL);
 }
 
-/* loop_through_buffer
+/* loop_buf
 -> Loop through the buffer to find a new line
 -> Return values:
 	- 0 = continue without returning anything
 	- 1 = return NULL
 */
-size_t	loop_through_buffer(int fd, char **buf, char **rmd)
+size_t	loop_buf(int fd, char **buf, char **rmd)
 {
 	char	*fnd;
 	char	*tmp;
@@ -137,7 +137,7 @@ char	*get_next_line(int fd)
 	char		*tmp;
 
 	buf = NULL;
-	if (rmd)
+	if (fd >= 0 && BUFFER_SIZE > 0 && rmd)
 	{
 		tmp = check_remaind(&rmd);
 		if (tmp)
@@ -154,7 +154,7 @@ char	*get_next_line(int fd)
 			rmd = NULL;
 		}
 	}
-	if (loop_through_buffer(fd, &buf, &rmd) == 1)
+	if (BUFFER_SIZE > 0 && fd >= 0 && loop_buf(fd, &buf, &rmd) == 1)
 		return (NULL);
 	return (buf);
 }

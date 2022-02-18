@@ -29,6 +29,6 @@ char	*get_next_line(int fd);
 char	*check_remaind(char **rmd);
 ssize_t	add_read_to_buffer(char **buf, char *nxt);
 char	*alloc_read_buffer(int fd);
-size_t	loop_through_buffer(int fd, char **buf, char **rmd);
+size_t	loop_buf(int fd, char **buf, char **rmd);
 
 #endif
